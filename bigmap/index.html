@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>Open Streetmap Demonstration</title>
+    <style type="text/css">
+      html, body, #basicMap {
+          width: 3200;
+          height: 4000;
+          margin: 10;
+      }
+      #drawnMapHidden {
+	  visibility: hidden;
+      }
+    </style>
+    <script type="text/javascript" src="js/OpenLayers.js"></script>
+    <script type="text/javascript" src="js/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="js/data.js"></script>	
+    <script type="text/javascript" src="js/base.js"></script>	
+  </head>
+
+  <body>
+	  <div id="basicMap"></div>
+	  <div id="drawnMapHidden"><canvas id="drawnMap" width="3200" height="2400"></canvas></div>
+  </body>
+</html>
