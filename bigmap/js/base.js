@@ -69,7 +69,7 @@ function parseData(data) {
 				city = obj.location.name; //user location trumps extracted location
 			}
 
-			var visiblecaption = "http://10.100.50.131/snap/label/makelabelid.php?imgurl="+obj.images.standard_resolution.url+"&func="+"pushimgurl"+
+			var visiblecaption = "http://pixels.media.mit.edu/label/makelabelid.php?imgurl="+obj.images.standard_resolution.url+"&func="+"pushimgurl"+
 			"&dateline="+dateString[1]+
 			"&timestamp="+dateString[0]+
 			"&capline="+caption+
