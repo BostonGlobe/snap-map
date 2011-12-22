@@ -1,0 +1,51 @@
+Snap is a instagram map visualization done for the Boston GlobeLab. It pulls
+data using the instagram API and shows them on a big map.
+
+To START UP the visualization go to:
+http://10.100.50.131/snap
+
+It might take a little while to load up but once it does it should be good to
+run. The rest of this README explains how it works for continued development
+
+-radishpower
+
+------------------------------------------------------------------------------
+All of the files live in:
+/srv/www/htdocs/snap
+
+The way the visualization works is it plots image markers on the map. Since the
+instgram image url returned by the API does not look the way we want it to, we
+have a php script called "makelabelid.php".
+
+"makelabelid.php" takes a few fields and generates an image which gets stored
+in read/writeable folder called "labels". It returns a URL to an image which can
+then be used as a marker on the map:
+
+http://10.100.50.131/snap/label/makelabelid.php?imgurl="+obj.images.standard_resolution.url+"&func="+"pushimgurl"+
+			"&dateline="+dateString[1]+
+			"&timestamp="+dateString[0]+
+			"&capline="+caption+
+			"&id="+obj.user.username+
+			"&lat="+lonLat.lat+"&lon="+lonLat.lon+
+			"&uploadtime="+obj.created_time+
+			"&location="+city+
+			"&idnum="+obj.id;
+
+Hence, labels will get filled up with all the new composited images from
+instagram. There is a cron job set up on the 10.100.50.131 machine so that the
+images get deleted every morning at 9am so as to not fill up the machine.
+Correspondingly, there is a python script which generates a webpage which lets
+us browse all those generated images in raw format and not shown on a map.
+
+"data.js" is a region file obtained from points local. Its is a big dictionary
+which stores the semantic location followed by the cooordinates of the outlined
+polygon. Each of these regions gets drawn with a unique color in the canvas
+"drawn_map". The canvas id with "drawn_map" is then hidden using the css file.
+The point of this map is to serve as a color system for the pictures which
+don't have a location associated with them.
+
+The first loop in base.js goes through all the hotspots hardcoded in the map
+and asks instagram to return images in those areas. All of the returned images
+are stored in an array which then gets sifted through using a second loop.
+
+The second loop ... TBD meeting time.
