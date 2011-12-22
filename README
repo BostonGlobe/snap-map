@@ -48,4 +48,15 @@ The first loop in base.js goes through all the hotspots hardcoded in the map
 and asks instagram to return images in those areas. All of the returned images
 are stored in an array which then gets sifted through using a second loop.
 
-The second loop ... TBD meeting time.
+The second loop in base.js goes through all of the stored images and plots them
+on the hidden canvas map to get the corresponding region. Once the image gets
+returned with a location, it's now considered ready and gets stored in another
+array.
+
+The third loop in base.js goes through all the ready images and plots them on
+the map with the appropriate latitude and longitude coordinates. Since there's
+a time step associated with us it's what gives the effect of pictures showing
+up uniformly throughout the day.
+
+Note that these three loops are all on different timers so they can be tweaked
+to grab images more often and plot less often and vice versa.
