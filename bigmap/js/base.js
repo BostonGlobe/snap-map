@@ -21,7 +21,6 @@ var objids = [];
 function hourlyUpdate() {
   	makeBasicQuery(42.371227435069805, -71.02455139160156); // Logan Airport
   	makeBasicQuery(42.36057345238455, -71.09561920166016); // MIT
-	makeBasicQuery(42.367676308265196, -71.10660552978516); //Central Square
 	makeBasicQuery(42.373002923187165, -71.1141586303711); // Harvard
 	makeBasicQuery(42.35296235855687, -71.08034133911133); // BackBay
 	makeBasicQuery(42.361207668593636, -71.06077194213867); // Beacon Hill
@@ -38,12 +37,14 @@ function hourlyUpdate() {
 	makeBasicQuery(42.28061099545887, -71.09699249267578); //Mattapan
 	makeBasicQuery(42.28264304558087, -71.1203384399414) ;//Roslinedale
 	makeBasicQuery(42.28875467633035, -71.08325958251953);//Harambee
-	makeBasicQuery(42.3875968, -71.0994968);//Somerville
 
 	window.setTimeout('hourlyUpdate()',300000); 
   	//window.setTimeout('hourlyUpdate()',3600000); 
 }
-
+function tenMinuteClear() {
+        objids = [];
+        window.setTimeout('tenMinuteClear()', 1800000);
+}
 function parseData(data) {
 	for (var i=0; i<data.data.length; i++) {
 		var obj = data.data[i];
@@ -68,7 +69,7 @@ function parseData(data) {
 				city = obj.location.name; //user location trumps extracted location
 			}
 
-			var visiblecaption = "http://pixels.media.mit.edu/label/makelabelid.php?imgurl="+obj.images.standard_resolution.url+"&func="+"pushimgurl"+
+			var visiblecaption = "http://10.100.50.131/snap/label/makelabelid.php?imgurl="+obj.images.standard_resolution.url+"&func="+"pushimgurl"+
 			"&dateline="+dateString[1]+
 			"&timestamp="+dateString[0]+
 			"&capline="+caption+
@@ -113,14 +114,14 @@ function oc(a)
 function pushimgurl(data) {
 	var lonLat = new OpenLayers.LonLat(data.lon, data.lat);
 	var size = new OpenLayers.Size(data.width,data.height);
-        var offset = new OpenLayers.Pixel(-400, -20);
+        var offset = new OpenLayers.Pixel(-size.w + 375, 80 -size.h);
         var icon = new OpenLayers.Icon(data.url,size,offset);
 	var marker = new OpenLayers.Marker(lonLat, icon);
 	markers.push(marker);
 }
 
 function MapThing() {
-	alert("You can pan around: Version Q");
+	alert("You can pan around: Version A");
 	map = new OpenLayers.Map("basicMap");
 	      
         mymaplayer = new OpenLayers.Layer.OSM();
@@ -133,8 +134,8 @@ function MapThing() {
 	map.setCenter(lonLat, 15); // Zoom level	
 
 	for (var i=0; i<region_coords.length; i++) {
-		drawRegion(region_coords[i]+Math.random());
-		drawCanvas(region_coords[i]+Math.random(), i);
+		drawRegion(region_coords[i]);
+		drawCanvas(region_coords[i], i);
 	}
 
 	// Now add the marker layer
@@ -192,7 +193,7 @@ function dateToString(machdate) {
 	month = months[d.getMonth()];
 	day = days[d.getDay()];
 	dateStringA = hour+":"+mins+suffix
-	dateStringB = " "+day+" "+d.getMonth()+"/"+dayofmonth+"/11";
+	dateStringB = " "+day+" "+(d.getMonth()+1)+"/"+dayofmonth+"/11";
 	
 	return [dateStringA, dateStringB];
 }
@@ -231,11 +232,6 @@ function minutelyUpdate() {
 	}
 	if (nolocurls.length > 0) injectScript(nolocurls.splice(Math.floor(Math.random()*nolocurls.length),1));
 	window.setTimeout('minutelyUpdate()', 12000);
-}
-
-function tenMinuteClear() {
-	objids = [];
-	window.setTimeout('tenMinuteClear()', 1800000);
 }
 
 function getRegion(lon, lat) {
